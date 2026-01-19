@@ -1,3 +1,3 @@
-zipar op tetris antes de empacotar
+>. zipar a pasta tetris antes de compactar
 
 
