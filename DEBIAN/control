@@ -1,0 +1,10 @@
+Package: tetris-python
+Version: 1.0.0
+Architecture: amd64
+Maintainer: devops <support@devops.com>
+Installed-Size: 200
+Depends: python3 (>= 3.12), python3-pygame, unzip
+Section: games
+Priority: optional
+Homepage: https://inneo.org
+Description: Diversao garantida com o famoso game Tetris, feito por inneo.or

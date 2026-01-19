@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+# Verifica se Python 3.12 está disponível
+command -v python3.12 >/dev/null 2>&1 || { echo "Python 3.12 não encontrado"; exit 1; }
+
+# Remove versão antiga para evitar conflitos
+rm -rf /opt/tetris
+
+# Extrair tar.gz para /opt
+tar -xzf /usr/share/tetris/tetris.tar.gz -C /opt
+
+# Criar o venv do zero (não dentro do tar.gz!)
+python3.12 -m venv /opt/tetris/venv
+
+# Instalar Pygame no venv
+/opt/tetris/venv/bin/pip install --upgrade pip
+/opt/tetris/venv/bin/pip install pygame==2.6.1
+
+# Dar permissão de execução ao script principal
+chmod +x /opt/tetris/main.py
+
+# Atalho global
+cat <<'EOF' > /usr/local/bin/tetris
+#!/bin/bash
+source /opt/tetris/venv/bin/activate
+/opt/tetris/venv/bin/python /opt/tetris/main.py
+EOF
+chmod +x /usr/local/bin/tetris
+
+# Arquivo .desktop
+cat <<EOF > /usr/share/applications/tetris.desktop
+[Desktop Entry]
+Name=Tetris
+Comment=Diversão garantida com o famoso game Tetris
+Exec=/usr/local/bin/tetris
+Icon=/usr/share/tetris/tetris.png
+Terminal=false
+Type=Application
+Categories=Game;
+EOF
+
+# Atualiza cache de menus
+update-desktop-database
+
+exit 0
